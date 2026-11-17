@@ -1,0 +1,87 @@
+[package]
+name = "stream-dock-ha"
+version = "1.1.1"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/Max-src/stream-dock-ha"
+description = "Windows tray app that controls a StreamDock 293S pad: programmable keys, a live side band, Home Assistant control and a Mini Monitor mode"
+
+[[bin]]
+name = "stream-dock-ha"
+path = "src/main.rs"
+
+[features]
+default = ["shots"]
+# Pictures of the window for checks and the README (--screenshot and the
+# STREAM_DOCK_HA_SHOT_* settings). make-setup.ps1 builds without them.
+shots = []
+
+[build-dependencies]
+winresource = "0.1"
+
+[dependencies]
+ab_glyph = "0.2"
+eframe = { version = "0.37", default-features = false, features = ["clipboard", "default_fonts", "glow"] }
+egui = { version = "0.37", default-features = false, features = ["monochrome_emoji_fonts"] }
+epaint_default_fonts = { version = "0.37", features = ["monochrome_emoji_fonts"] }
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+jpeg-encoder = "0.6"
+mirajazz = "0.16"
+raw-window-handle = "0.6"
+rfd = "0.15"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ureq = { version = "3", default-features = false, features = ["native-tls", "json"] }
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "sync", "time"] }
+tokio-tungstenite = { version = "0.30", features = ["native-tls"] }
+windows = { version = "0.61", features = [
+    "Foundation",
+    "Media_Control",
+    "Win32_Media_Audio",
+    "Win32_Media_Audio_Endpoints",
+    "Win32_System_Com",
+    "Win32_System_Com_StructuredStorage",
+    "Win32_System_Variant",
+    "Win32_UI_Shell",
+] }
+windows-sys = { version = "0.61", features = [
+    "Win32_Devices_DeviceAndDriverInstallation",
+    "Win32_Devices_HumanInterfaceDevice",
+    "Win32_Foundation",
+    "Win32_Globalization",
+    "Win32_Graphics_Dwm",
+    "Win32_Graphics_Gdi",
+    "Win32_Security",
+    "Win32_Security_Cryptography",
+    "Win32_Storage_FileSystem",
+    "Win32_System_Com",
+    "Win32_System_Diagnostics_ToolHelp",
+    "Win32_System_IO",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Performance",
+    "Win32_System_Registry",
+    "Win32_System_Shutdown",
+    "Win32_System_SystemInformation",
+    "Win32_System_Threading",
+    "Win32_UI_HiDpi",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+# Debug builds are used day to day, so picture work must be quick in them too.
+[profile.dev]
+opt-level = 2
+
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.release]
+opt-level = 2
+strip = true
+# One unit, optimised across crates: a smaller, slightly faster program for
+# the setup file, at the cost of a longer build. Panics stay as they are: a
+# pad thread that fails must not take the whole app with it.
+lto = "fat"
+codegen-units = 1

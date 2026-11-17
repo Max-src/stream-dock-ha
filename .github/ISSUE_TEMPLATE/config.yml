@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: A problem inside Home Assistant
+    url: https://github.com/Max-src/stream-dock-ha-integration/issues
+    about: Devices, entities, dashboard cards, actions and blueprints belong to the integration's repository.

@@ -1,0 +1,9 @@
+# Build output: remade by cargo.
+/target/
+
+# The setup file: remade by make-setup.ps1.
+/dist/
+
+# Working test files: pictures of the real window, copies of settings and
+# scripts tied to one PC. None of them are needed to build or run the app.
+/shots/
